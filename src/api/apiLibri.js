@@ -27,14 +27,14 @@ export const libriApi = {
 
   getLibri: () => request("/libro/list", { method: "GET" }),
 
-  createLibro: (libroDto) => request("/libro/create", {
+  createLibro: (payload) => request("/libro/create", {
     method: "POST",
-    body: JSON.stringify(libroDto),
+    body: JSON.stringify(payload),
   }),
 
-  updateLibro: (libroDto) => request("/libro/update", {
+  updateLibro: (payload) => request("/libro/update", {
     method: "PUT",
-    body: JSON.stringify(libroDto),
+    body: JSON.stringify(payload),
   }),
 
   deleteLibro: (id) => request(`/libro/delete/${id}`, {
