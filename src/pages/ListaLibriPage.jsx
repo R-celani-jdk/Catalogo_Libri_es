@@ -39,10 +39,6 @@ export default function ListaLibriPage() {
 
   const showSpinner = isLoading;
   
-  useEffect(() => {
-    loadAll();
-  }, [loadAll]);
-  
   const loadAll = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -55,6 +51,10 @@ export default function ListaLibriPage() {
       setIsLoading(false);
     }
   }, []);
+  
+  useEffect(() => {
+    loadAll();
+  }, [loadAll]);
 
   const handleOpenEdit = (libro) => {
     setLibroSelezionato(libro);
