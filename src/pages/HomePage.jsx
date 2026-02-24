@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Card, CardContent, Stack, Typography, Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import FormLibro from "../components/FormLibro";
@@ -10,6 +10,31 @@ export default function HomePage() {
 
   const [isSaving, setIsSaving] = useState(false);
   const [successMessage, setSuccessMessage] = useState(null);
+
+  const [tipologie, setTipologie] = useState([]);
+  const [isLoadingTipologie, setIsLoadingTipologie] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      setIsLoadingTipologie(true);
+      try {
+        const data = await libriApi.getTipologie();
+        const lista = Array.isArray(data) ? data : (data?.result ?? []);
+        const listaTipologie = lista.map((x) => x?.tipologia).filter(Boolean);
+        if (!cancelled) setTipologie(listaTipologie);
+      } catch (err) {
+        console.error("Errore caricamento tipologie:", err);
+      } finally {
+        if (!cancelled) setIsLoadingTipologie(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleOpenForm = () => {
     setSuccessMessage(null);
@@ -60,6 +85,8 @@ export default function HomePage() {
             </Typography>
 
             <FormLibro
+              tipologie={tipologie}
+              isLoadingTipologie={isLoadingTipologie}
               onSubmit={handleSave}
               submitLabel="Salva"
               isLoading={isSaving}

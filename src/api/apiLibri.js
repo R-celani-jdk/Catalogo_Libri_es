@@ -26,7 +26,9 @@ function safeJsonParse(text) {
 export const libriApi = {
 
   getLibri: () => request("/libro/list", { method: "GET" }),
-
+  
+  getTipologie: () => request("/libro/tipologie", { method: "GET" }),
+  
   createLibro: (payload) => request("/libro/create", {
     method: "POST",
     body: JSON.stringify(payload),
@@ -40,4 +42,5 @@ export const libriApi = {
   deleteLibro: (id) => request(`/libro/delete/${id}`, {
     method: "DELETE",
   }),
+
 };

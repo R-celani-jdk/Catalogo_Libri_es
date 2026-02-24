@@ -1,10 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { Box, Button, MenuItem, Stack, TextField, Alert } from "@mui/material";
 
-const TIPOLOGIE = ["horror", "fantasy", "thriller", "romanzo", "poesie", "scientifico"];
 
 export default function FormLibro({
   initialValues = { titolo: "", autore: "", tipologia: "" },
+  tipologie = [],
+  isLoadingTipologie = false,
   onSubmit,
   submitLabel = "Salva",
   isLoading = false,
@@ -12,13 +13,13 @@ export default function FormLibro({
   onCancel,
 }) {
   
+  const [error, setError] = useState(null);
+
   const [values, setValues] = useState(() => ({
     titolo: initialValues.titolo ?? "",
     autore: initialValues.autore ?? "",
     tipologia: initialValues.tipologia ?? "",
   }));
-
-  const [error, setError] = useState(null);
 
   const canSubmit = useMemo(() => {
     return values.titolo.trim() && values.autore.trim() && values.tipologia.trim() && !isLoading;
@@ -76,8 +77,9 @@ export default function FormLibro({
           value={values.tipologia}
           onChange={handleChange("tipologia")}
           fullWidth
+          disabled={isLoading || isLoadingTipologie}
         >
-          {TIPOLOGIE.map((t) => (
+          {tipologie.map((t) => (
             <MenuItem key={t} value={t}>
               {t}
             </MenuItem>
