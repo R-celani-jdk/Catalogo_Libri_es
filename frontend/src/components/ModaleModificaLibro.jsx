@@ -24,9 +24,7 @@ export default function ModaleModificaLibro({ open, libro, onClose, onSave }) {
             setIsLoadingTipologie(true);
             try {
                 const data = await libriApi.getTipologie();
-                const lista = Array.isArray(data) ? data : (data?.result ?? []);
-                const listaTipologie = lista.map((x) => x?.tipologia).filter(Boolean);
-                if (!cancelled) setTipologie(listaTipologie);
+                if (!cancelled) setTipologie(data);
             } finally {
                 if (!cancelled) setIsLoadingTipologie(false);
             }
