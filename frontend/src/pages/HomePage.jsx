@@ -6,8 +6,8 @@ import { libriApi } from "../api/apiLibri";
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const [mostraForm, setMostraForm] = useState(false);
 
+  const [mostraForm, setMostraForm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [successMessage, setSuccessMessage] = useState(null);
 
@@ -21,9 +21,8 @@ export default function HomePage() {
       setIsLoadingTipologie(true);
       try {
         const data = await libriApi.getTipologie();
-        const lista = Array.isArray(data) ? data : (data?.result ?? []);
-        const listaTipologie = lista.map((x) => x?.tipologia).filter(Boolean);
-        if (!cancelled) setTipologie(listaTipologie);
+        // data è già: ["horror","fantasy",...]
+        if (!cancelled) setTipologie(data);
       } catch (err) {
         console.error("Errore caricamento tipologie:", err);
       } finally {
@@ -43,8 +42,8 @@ export default function HomePage() {
 
   const handleSave = async (payload) => {
     setSuccessMessage(null);
-
     setIsSaving(true);
+
     try {
       await libriApi.createLibro(payload);
       setSuccessMessage("Libro salvato correttamente!");
